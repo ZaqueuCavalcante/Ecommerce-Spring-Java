@@ -1,21 +1,20 @@
 package br.com.zaqueucavalcante.ecommercespringjava.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "user_table")
-public class User implements Serializable {
+@Table(name = "address_table")
+public class Address implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,24 +22,30 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String name;
-	private String email;
-	private String phone;
-	private String password;
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	private City city;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "client")
-	private List<Order> orders = new ArrayList<>();
+	private String street;
+	private String avenue;
+	private String zipCode;
 
-	public User() {}
-	
-	public User(Long id, String name, String email, String phone, String password) {
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private Client client;
+
+	public Address() {
+	}
+
+	public Address(Long id, City city, String street, String avenue, String zipCode, Client client) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.password = password;
+		this.setCity(city);
+		this.street = street;
+		this.avenue = avenue;
+		this.zipCode = zipCode;
+		this.client = client;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -52,40 +57,44 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public City getCity() {
+		return city;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCity(City city) {
+		this.city = city;
+	}
+	
+	public String getStreet() {
+		return street;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getAvenue() {
+		return avenue;
 	}
 
-	public String getPhone() {
-		return phone;
+	public void setAvenue(String avenue) {
+		this.avenue = avenue;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public String getZipCode() {
+		return zipCode;
 	}
 
-	public String getPassword() {
-		return password;
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public Client getClient() {
+		return client;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -105,7 +114,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Address other = (Address) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

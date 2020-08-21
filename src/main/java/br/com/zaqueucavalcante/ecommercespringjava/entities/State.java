@@ -58,6 +58,11 @@ public class State implements Serializable {
 	public Set<City> getCities() {
 		return cities;
 	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void addCity(City city) {
+		cities.add(city);
+	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@Override

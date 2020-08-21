@@ -10,30 +10,30 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.User;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.UserRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UserService {
+public class ClientService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private ClientRepository userRepository;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public List<User> findAll() {
+	public List<Client> findAll() {
 		return userRepository.findAll();
 	}
 
-	public User findById(Long id) {
-		Optional<User> entity = userRepository.findById(id);
+	public Client findById(Long id) {
+		Optional<Client> entity = userRepository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public User insert(User user) {
-		return userRepository.save(user);
+	public Client insert(Client client) {
+		return userRepository.save(client);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -48,19 +48,18 @@ public class UserService {
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public User update(Long id, User updatedUser) {
+	public Client update(Long id, Client updatedClient) {
 		try {
-			User user = userRepository.getOne(id);
-			updateUser(user, updatedUser);
-			return userRepository.save(user);
+			Client client = userRepository.getOne(id);
+			updateUser(client, updatedClient);
+			return userRepository.save(client);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 	
-	private void updateUser(User user, User updatedUser) {
-		user.setName(updatedUser.getName());
-		user.setEmail(updatedUser.getEmail());
-		user.setPhone(updatedUser.getPhone());
+	private void updateUser(Client client, Client updatedClient) {
+		client.setName(updatedClient.getName());
+		client.setEmail(updatedClient.getEmail());
 	}
 }

@@ -16,6 +16,7 @@ public class OrderItem implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EmbeddedId
 	private OrderItemPrimaryKey id = new OrderItemPrimaryKey();
 

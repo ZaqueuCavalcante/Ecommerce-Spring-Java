@@ -34,6 +34,7 @@ public class City implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.state = state;
+		state.addCity(this);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

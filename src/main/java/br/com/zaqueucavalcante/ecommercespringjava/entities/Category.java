@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "category_table")
 public class Category implements Serializable {
@@ -26,7 +24,6 @@ public class Category implements Serializable {
 	
 	private String name;
 	
-	@JsonIgnore
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products  = new HashSet<>();
 
@@ -62,10 +59,14 @@ public class Category implements Serializable {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public void addProduct(Product product) {
 		products.add(product);
+		product.addCategory(this);
 	}
 	
 	public void addProducts(List<Product> productList) {
 		products.addAll(productList);
+		for (Product product : productList) {
+			product.addCategory(this);
+		}
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

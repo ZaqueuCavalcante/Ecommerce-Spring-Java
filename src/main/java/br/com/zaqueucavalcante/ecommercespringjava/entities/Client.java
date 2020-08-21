@@ -1,57 +1,59 @@
 package br.com.zaqueucavalcante.ecommercespringjava.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserType;
+
 @Entity
-@Table(name = "product_table")
-public class Product implements Serializable {
+@Table(name = "client_table")
+public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String name;
-	private String description;
-	private String imageUrl;
-	private Double price;
-	
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "product_category_table",
-			   joinColumns = @JoinColumn(name = "product_id"),
-			   inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<Category> categories = new HashSet<>();
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "id.product")
-	private Set<OrderItem> orderItems = new HashSet<>();
 
-	public Product() {}
+	private String name;
+	private String email;
+	private Integer type;
+	private String cpfOrCnpj;
 	
-	public Product(Long id, String name, String description, String imageUrl, Double price) {
+	@ElementCollection
+	@CollectionTable(name = "phone_table")
+	private Set<String> phones = new HashSet<>();
+	
+	@OneToMany(mappedBy = "client")
+	private Set<Address> adresses = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
+
+	public Client() {}
+	
+	public Client(Long id, String name, String email, UserType type, String cpfOrCnpj) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
-		this.imageUrl = imageUrl;
-		this.price = price;
+		this.email = email;
+		this.type = type.getCode();
+		this.cpfOrCnpj = cpfOrCnpj;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -71,55 +73,53 @@ public class Product implements Serializable {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public Set<Category> getCategories() {
-		return categories;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public void addCategory(Category category) {
-		categories.add(category);
+	public UserType getType() {
+		return UserType.valueOf(type);
 	}
-	
-	public void addCategories(List<Category> categoryList) {
-		categories.addAll(categoryList);
+
+	public void setType(UserType type) {
+		this.type = type.getCode();
 	}
-	
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	@JsonIgnore
-	public Set<Order> getOrders() {
-		Set<Order> orders = new HashSet<>();
-		for (OrderItem orderItem : this.orderItems) {
-			orders.add(orderItem.getOrder());
-		}
+
+	public String getCpfOrCnpj() {
+		return cpfOrCnpj;
+	}
+
+	public void setCpfOrCnpj(String cpfOrCnpj) {
+		this.cpfOrCnpj = cpfOrCnpj;
+	}
+
+	public List<Order> getOrders() {
 		return orders;
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
+	public void addPhone(String phone) {
+		phones.add(phone);
+	}
+	
+	public void addPhones(List<String> phonesList) {
+		phones.addAll(phonesList);
+	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void addAddress(Address address) {
+		adresses.add(address);
+	}
+	
+	public void addAdresses(List<Address> addressList) {
+		adresses.addAll(addressList);
+	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -136,7 +136,7 @@ public class Product implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Product other = (Product) obj;
+		Client other = (Client) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

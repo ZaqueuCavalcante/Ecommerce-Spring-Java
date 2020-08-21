@@ -15,48 +15,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.User;
-import br.com.zaqueucavalcante.ecommercespringjava.services.UserService;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.services.ClientService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/clients")
+public class ClientResource {
 
 	@Autowired
-	private UserService userService;
+	private ClientService clientService;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@GetMapping
-	public ResponseEntity<List<User>> findAll() {
-		List<User> usersList = userService.findAll();
-		return ResponseEntity.ok().body(usersList);
+	public ResponseEntity<List<Client>> findAll() {
+		List<Client> clientsList = clientService.findAll();
+		return ResponseEntity.ok().body(clientsList);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
-		User user = userService.findById(id);
-		return ResponseEntity.ok().body(user);
+	public ResponseEntity<Client> findById(@PathVariable Long id) {
+		Client client = clientService.findById(id);
+		return ResponseEntity.ok().body(client);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@PostMapping
-	public ResponseEntity<User> insert(@RequestBody User user) {
-		user = userService.insert(user);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-		return ResponseEntity.created(uri).body(user);
+	public ResponseEntity<Client> insert(@RequestBody Client client) {
+		client = clientService.insert(client);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
+		return ResponseEntity.created(uri).body(client);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		userService.delete(id);
+		clientService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-		User updatedUser = userService.update(id, user);
+	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client client) {
+		Client updatedUser = clientService.update(id, client);
 		return ResponseEntity.ok().body(updatedUser);
 	}
 }

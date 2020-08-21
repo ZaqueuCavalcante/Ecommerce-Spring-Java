@@ -2,8 +2,8 @@ package br.com.zaqueucavalcante.ecommercespringjava.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.User;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.City;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface CityRepository extends JpaRepository<City, Long> {
 
 }

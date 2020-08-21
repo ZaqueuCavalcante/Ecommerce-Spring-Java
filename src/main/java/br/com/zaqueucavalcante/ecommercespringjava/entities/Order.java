@@ -35,7 +35,7 @@ public class Order implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "client_id")
-	private User client;
+	private Client client;
 
 	private Integer statusCode;
 	
@@ -44,11 +44,15 @@ public class Order implements Serializable {
 	
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
+	
+	@ManyToOne
+	@JoinColumn(name = "delivery_address_id")
+	private Address deliveryAddress;
 
 	public Order() {
 	}
 	
-	public Order(Long id, Instant instant, User client, OrderStatus orderStatus) {
+	public Order(Long id, Instant instant, Client client, OrderStatus orderStatus) {
 		super();
 		this.id = id;
 		this.instant = instant;
@@ -73,11 +77,11 @@ public class Order implements Serializable {
 		this.instant = instant;
 	}
 
-	public User getClient() {
+	public Client getClient() {
 		return client;
 	}
 
-	public void setClient(User client) {
+	public void setClient(Client client) {
 		this.client = client;
 	}
 
