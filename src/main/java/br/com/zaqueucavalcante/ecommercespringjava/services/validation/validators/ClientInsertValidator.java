@@ -14,7 +14,7 @@ import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.resources.exceptions.FieldMessage;
 import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientInsert;
-import br.com.zaqueucavalcante.ecommercespringjava.services.validation.util.CpfAndCnpj;
+import br.com.zaqueucavalcante.ecommercespringjava.services.validation.utils.CpfAndCnpj;
 
 public class ClientInsertValidator implements ConstraintValidator<ClientInsert, ClientFullDTO> {
 

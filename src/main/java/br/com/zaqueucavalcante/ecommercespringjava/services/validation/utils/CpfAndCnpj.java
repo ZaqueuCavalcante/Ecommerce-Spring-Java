@@ -1,4 +1,4 @@
-package br.com.zaqueucavalcante.ecommercespringjava.services.validation.util;
+package br.com.zaqueucavalcante.ecommercespringjava.services.validation.utils;
 
 // Source -> https://gist.github.com/adrianoluis/5043397d378ae506d87366abb0ab4e30
 public class CpfAndCnpj {
