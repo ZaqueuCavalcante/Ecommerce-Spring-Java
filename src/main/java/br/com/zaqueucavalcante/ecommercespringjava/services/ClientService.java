@@ -19,27 +19,28 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceN
 public class ClientService {
 
 	@Autowired
-	private ClientRepository userRepository;
+	private ClientRepository repository;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Client> findAll() {
-		return userRepository.findAll();
+		return repository.findAll();
 	}
 
 	public Client findById(Long id) {
-		Optional<Client> entity = userRepository.findById(id);
+		Optional<Client> entity = repository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public Client insert(Client client) {
-		return userRepository.save(client);
+		client.setId(null);
+		return repository.save(client);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public void delete(Long id) {
 		try {
-			userRepository.deleteById(id);
+			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
 		} catch (DataIntegrityViolationException e) {
@@ -50,9 +51,9 @@ public class ClientService {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public Client update(Long id, Client updatedClient) {
 		try {
-			Client client = userRepository.getOne(id);
+			Client client = repository.getOne(id);
 			updateUser(client, updatedClient);
-			return userRepository.save(client);
+			return repository.save(client);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}

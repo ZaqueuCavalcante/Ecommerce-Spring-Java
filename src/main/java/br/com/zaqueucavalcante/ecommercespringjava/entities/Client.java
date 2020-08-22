@@ -120,6 +120,15 @@ public class Client implements Serializable {
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void addOrder(Order order) {
+		orders.add(order);
+	}
+	
+	public void addOrders(List<Order> orderList) {
+		orders.addAll(orderList);
+	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@Override
 	public int hashCode() {
 		final int prime = 31;

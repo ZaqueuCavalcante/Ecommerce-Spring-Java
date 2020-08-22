@@ -14,15 +14,15 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceN
 public class ProductService {
 
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductRepository repository;
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Product> findAll() {
-		return productRepository.findAll();
+		return repository.findAll();
 	}
 	
 	public Product findById(Long id) {
-		Optional<Product> entity = productRepository.findById(id);
+		Optional<Product> entity = repository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 }

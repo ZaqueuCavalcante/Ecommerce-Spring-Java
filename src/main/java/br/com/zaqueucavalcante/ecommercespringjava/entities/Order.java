@@ -3,6 +3,7 @@ package br.com.zaqueucavalcante.ecommercespringjava.entities;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -52,12 +53,12 @@ public class Order implements Serializable {
 	public Order() {
 	}
 	
-	public Order(Long id, Instant instant, Client client, OrderStatus orderStatus) {
+	public Order(Long id, Instant instant, Client client) {
 		super();
 		this.id = id;
 		this.instant = instant;
 		this.client = client;
-		this.setStatus(orderStatus);
+		this.setStatus(OrderStatus.WAITING_PAYMENT);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -107,6 +108,14 @@ public class Order implements Serializable {
 		this.payment = payment;
 	}
 	
+	public Address getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public Double getTotal() {
 		double total = 0;
@@ -114,6 +123,15 @@ public class Order implements Serializable {
 			total += orderItem.getSubTotal();
 		}
 		return total;
+	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void addItem(OrderItem item) {
+		items.add(item);
+	}
+	
+	public void addItems(List<OrderItem> itemList) {
+		items.addAll(itemList);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

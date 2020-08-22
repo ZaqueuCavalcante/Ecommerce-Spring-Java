@@ -17,18 +17,18 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.ProductService;
 public class ProductResource {
 	
 	@Autowired
-	private ProductService productService;
+	private ProductService service;
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@GetMapping
 	public ResponseEntity<List<Product>> findAll() {
-		List<Product> productsList = productService.findAll();
+		List<Product> productsList = service.findAll();
 		return ResponseEntity.ok().body(productsList);
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> findById(@PathVariable Long id) {
-		Product Product = productService.findById(id);
+		Product Product = service.findById(id);
 		return ResponseEntity.ok().body(Product);
 	}
 }

@@ -17,18 +17,18 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.OrderService;
 public class OrderResource {
 	
 	@Autowired
-	private OrderService OrderService;
+	private OrderService service;
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@GetMapping
 	public ResponseEntity<List<Order>> findAll() {
-		List<Order> ordersList = OrderService.findAll();
+		List<Order> ordersList = service.findAll();
 		return ResponseEntity.ok().body(ordersList);
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Order> findById(@PathVariable Long id) {
-		Order order = OrderService.findById(id);
+		Order order = service.findById(id);
 		return ResponseEntity.ok().body(order);
 	}
 }

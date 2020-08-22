@@ -14,15 +14,15 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceN
 public class OrderService {
 
 	@Autowired
-	private OrderRepository orderRepository;
+	private OrderRepository repository;
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Order> findAll() {
-		return orderRepository.findAll();
+		return repository.findAll();
 	}
 	
 	public Order findById(Long id) {
-		Optional<Order> entity = orderRepository.findById(id);
+		Optional<Order> entity = repository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 }

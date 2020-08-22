@@ -109,6 +109,14 @@ public class Product implements Serializable {
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void addOrderItem(OrderItem orderItem) {
+		orderItems.add(orderItem);
+	}
+	
+	public void addItems(List<OrderItem> orderItemList) {
+		orderItems.addAll(orderItemList);
+	}
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@JsonIgnore
 	public Set<Order> getOrders() {
 		Set<Order> orders = new HashSet<>();

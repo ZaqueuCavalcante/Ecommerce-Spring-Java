@@ -23,40 +23,40 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.ClientService;
 public class ClientResource {
 
 	@Autowired
-	private ClientService clientService;
+	private ClientService service;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@GetMapping
 	public ResponseEntity<List<Client>> findAll() {
-		List<Client> clientsList = clientService.findAll();
+		List<Client> clientsList = service.findAll();
 		return ResponseEntity.ok().body(clientsList);
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Client> findById(@PathVariable Long id) {
-		Client client = clientService.findById(id);
+		Client client = service.findById(id);
 		return ResponseEntity.ok().body(client);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@PostMapping
 	public ResponseEntity<Client> insert(@RequestBody Client client) {
-		client = clientService.insert(client);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
-		return ResponseEntity.created(uri).body(client);
+		Client newClient = service.insert(client);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newClient.getId()).toUri();
+		return ResponseEntity.created(uri).body(newClient);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		clientService.delete(id);
+		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client client) {
-		Client updatedUser = clientService.update(id, client);
-		return ResponseEntity.ok().body(updatedUser);
+		Client updatedClient = service.update(id, client);
+		return ResponseEntity.ok().body(updatedClient);
 	}
 }

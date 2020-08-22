@@ -3,8 +3,10 @@ package br.com.zaqueucavalcante.ecommercespringjava.entities;
 import java.time.Instant;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "credit_card_payment_table")
 public class CreditCardPayment extends Payment {
 
 	private static final long serialVersionUID = 1L;

@@ -16,10 +16,12 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.PaymentStatus;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "payment_table")
-public class Payment implements Serializable {
+public abstract class Payment implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -28,6 +30,7 @@ public class Payment implements Serializable {
 	private Long id;
 	
 	private Instant instant;
+	private Integer statusCode;
 	
 	@JsonIgnore
 	@OneToOne
@@ -43,6 +46,7 @@ public class Payment implements Serializable {
 		this.id = id;
 		this.instant = instant;
 		this.order = order;
+		this.setStatus(PaymentStatus.PENDING);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -60,6 +64,16 @@ public class Payment implements Serializable {
 
 	public void setInstant(Instant instant) {
 		this.instant = instant;
+	}
+	
+	public PaymentStatus getStatus() {
+		return PaymentStatus.valueOf(statusCode);
+	}
+
+	public void setStatus(PaymentStatus paymentStatus) {
+		if (paymentStatus != null) {
+			this.statusCode = paymentStatus.getCode();
+		}
 	}
 
 	public Order getOrder() {

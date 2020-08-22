@@ -22,16 +22,18 @@ public class OrderItem implements Serializable {
 
 	private Integer quantity;
 	private Double price;
+	private Double discountPercentage;
 
 	public OrderItem() {
 	}
 
-	public OrderItem(Order order, Product product, Integer quantity, Double price) {
+	public OrderItem(Order order, Product product, Integer quantity, Double price, Double discountPercentage) {
 		super();
 		id.setOrder(order);
 		id.setProduct(product);
 		this.quantity = quantity;
 		this.price = price;
+		this.discountPercentage = discountPercentage;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -44,7 +46,6 @@ public class OrderItem implements Serializable {
 		id.setOrder(order);
 	}
 
-	@JsonIgnore
 	public Product getProduct() {
 		return id.getProduct();
 	}
@@ -65,14 +66,26 @@ public class OrderItem implements Serializable {
 	public Double getPrice() {
 		return price;
 	}
+	
+	public Double getPriceWithDiscount() {
+		return (price * (1 - discountPercentage/100.00));
+	}
 
 	public void setPrice(Double price) {
 		this.price = price;
 	}
 
+	public Double getDiscountPercentage() {
+		return discountPercentage;
+	}
+
+	public void setDiscountPercentage(Double discountPercentage) {
+		this.discountPercentage = discountPercentage;
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public Double getSubTotal() {
-		return price * quantity;
+		return this.getPriceWithDiscount() * quantity;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
