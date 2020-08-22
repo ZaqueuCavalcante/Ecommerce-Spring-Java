@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserType;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
 
 @Entity
 @Table(name = "client_table")
@@ -30,7 +32,10 @@ public class Client implements Serializable {
 	private Long id;
 
 	private String name;
+	
+	@Column(unique = true)
 	private String email;
+	
 	private Integer type;
 	private String cpfOrCnpj;
 	
@@ -38,7 +43,7 @@ public class Client implements Serializable {
 	@CollectionTable(name = "phone_table")
 	private Set<String> phones = new HashSet<>();
 	
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private Set<Address> adresses = new HashSet<>();
 	
 	@JsonIgnore
@@ -47,7 +52,7 @@ public class Client implements Serializable {
 
 	public Client() {}
 	
-	public Client(Long id, String name, String email, UserType type, String cpfOrCnpj) {
+	public Client(Long id, String name, String email, ClientType type, String cpfOrCnpj) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -81,11 +86,11 @@ public class Client implements Serializable {
 		this.email = email;
 	}
 	
-	public UserType getType() {
-		return UserType.valueOf(type);
+	public ClientType getType() {
+		return ClientType.valueOf(type);
 	}
 
-	public void setType(UserType type) {
+	public void setType(ClientType type) {
 		this.type = type.getCode();
 	}
 

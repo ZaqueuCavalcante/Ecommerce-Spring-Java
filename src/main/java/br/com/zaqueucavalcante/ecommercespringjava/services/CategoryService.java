@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CategoryDTO;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Category;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
@@ -43,6 +44,10 @@ public class CategoryService {
 	public Category insert(Category category) {
 		category.setId(null);
 		return repository.save(category);
+	}
+	
+	public Category fromDTO(CategoryDTO categoryDTO) {
+		return new Category(categoryDTO.getId(), categoryDTO.getName());
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

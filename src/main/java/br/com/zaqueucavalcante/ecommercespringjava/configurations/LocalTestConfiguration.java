@@ -15,7 +15,7 @@ import br.com.zaqueucavalcante.ecommercespringjava.entities.Order;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.OrderItem;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Payment;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Product;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserType;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.AddressRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.CityRepository;
@@ -25,7 +25,6 @@ import br.com.zaqueucavalcante.ecommercespringjava.repositories.OrderRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.PaymentRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ProductRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.StateRepository;
-
 
 @Configuration
 @Profile("test")
@@ -60,8 +59,8 @@ public class LocalTestConfiguration implements CommandLineRunner {
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public void run(String... args) throws Exception {
-		Client u1 = new Client(null, "Maria Brown", "maria@gmail.com", UserType.PHYSICAL_PERSON, "123456");
-		Client u2 = new Client(null, "Alex Green", "alex@gmail.com", UserType.LEGAL_PERSON, "123456");
+		Client u1 = new Client(null, "Maria Brown", "maria@gmail.com", ClientType.PHYSICAL_PERSON, "123456");
+		Client u2 = new Client(null, "Alex Green", "alex@gmail.com", ClientType.LEGAL_PERSON, "123456");
 		
 		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1);
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2);

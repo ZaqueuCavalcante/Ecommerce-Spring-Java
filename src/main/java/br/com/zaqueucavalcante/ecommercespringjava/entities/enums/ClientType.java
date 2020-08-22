@@ -1,6 +1,6 @@
 package br.com.zaqueucavalcante.ecommercespringjava.entities.enums;
 
-public enum UserType {
+public enum ClientType {
 
 	PHYSICAL_PERSON(1, "Physical Person"),
 	LEGAL_PERSON(2, "Legal Person");
@@ -8,7 +8,7 @@ public enum UserType {
 	private int code;
 	private String description;
 
-	private UserType(int code, String description) {
+	private ClientType(int code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -23,12 +23,12 @@ public enum UserType {
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public static UserType valueOf(int code) {
-		for (UserType value : UserType.values()) {
+	public static ClientType valueOf(int code) {
+		for (ClientType value : ClientType.values()) {
 			if (value.getCode() == code) {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid UserType code.");
+		throw new IllegalArgumentException("Invalid ClientType code.");
 	}
 }
