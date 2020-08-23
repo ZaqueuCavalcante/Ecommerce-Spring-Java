@@ -5,7 +5,10 @@ import java.time.Instant;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 @Entity
+@JsonTypeName("CreditCardPayment")
 @Table(name = "credit_card_payment_table")
 public class CreditCardPayment extends Payment {
 

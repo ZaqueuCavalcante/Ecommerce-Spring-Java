@@ -1,12 +1,15 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Order;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.PaymentStatus;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.OrderRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 
@@ -14,15 +17,53 @@ import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceN
 public class OrderService {
 
 	@Autowired
-	private OrderRepository repository;
+	private OrderRepository orderRepository;
+	
+	clientService;
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Order> findAll() {
-		return repository.findAll();
+		return orderRepository.findAll();
 	}
 	
 	public Order findById(Long id) {
-		Optional<Order> entity = repository.findById(id);
+		Optional<Order> entity = orderRepository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@Transactional
+	public Order insert(Order order) {
+		order.setId(null);
+		order.setInstant(Instant.now());
+		order.getPayment().setStatus(PaymentStatus.PENDING);
+		order.getPayment().setOrder(order);
+		return orderRepository.save(order);
+	}
+	
+//	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+//	public void delete(Long id) {
+//		try {
+//			repository.deleteById(id);
+//		} catch (EmptyResultDataAccessException e) {
+//			throw new ResourceNotFoundException(id);
+//		} catch (DataIntegrityViolationException e) {
+//			throw new DatabaseException(e.getMessage());
+//		}
+//	}
+//
+//	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+//	public Category update(Long id, Category updatedCategory) {
+//		try {
+//			Category category = repository.getOne(id);
+//			updateCategory(category, updatedCategory);
+//			return repository.save(category);
+//		} catch (EntityNotFoundException e) {
+//			throw new ResourceNotFoundException(id);
+//		}
+//	}
+//	
+//	private void updateCategory(Category category, Category updatedCategory) {
+//		category.setName(updatedCategory.getName());
+//	}
 }

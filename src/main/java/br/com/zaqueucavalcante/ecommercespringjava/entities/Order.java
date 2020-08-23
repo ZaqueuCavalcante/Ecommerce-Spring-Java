@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.OrderStatus;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.PaymentStatus;
 
 @Entity
 @Table(name = "order_table")
@@ -132,6 +133,22 @@ public class Order implements Serializable {
 	
 	public void addItems(List<OrderItem> itemList) {
 		items.addAll(itemList);
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Order [id=");
+		builder.append(id);
+		builder.append(", instant=");
+		builder.append(instant);
+		builder.append(", client=");
+		builder.append(client);
+		builder.append(", statusCode=");
+		builder.append(statusCode);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("BoletoPayment")
 @Table(name = "boleto_payment_table")
 public class BoletoPayment extends Payment {
 

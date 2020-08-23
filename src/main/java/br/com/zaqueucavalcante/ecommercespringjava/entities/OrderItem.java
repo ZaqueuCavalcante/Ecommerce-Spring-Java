@@ -87,6 +87,23 @@ public class OrderItem implements Serializable {
 	public Double getSubTotal() {
 		return this.getPriceWithDiscount() * quantity;
 	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getProduct().getName());
+		builder.append(" [quantity=");
+		builder.append(quantity);
+		builder.append(", price=");
+		builder.append(price);
+		builder.append(", discountPercentage=");
+		builder.append(discountPercentage);
+		builder.append(", subtotal=");
+		builder.append(getSubTotal());
+		builder.append("]");
+		return builder.toString();
+	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@Override
