@@ -46,6 +46,7 @@ public class Address implements Serializable {
 		this.avenue = avenue;
 		this.zipCode = zipCode;
 		this.client = client;
+		client.addAddress(this);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

@@ -48,6 +48,7 @@ public abstract class Payment implements Serializable {
 		this.id = id;
 		this.instant = instant;
 		this.order = order;
+		order.setPayment(this);
 		this.setStatus(PaymentStatus.PENDING);
 	}
 

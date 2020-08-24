@@ -4,13 +4,18 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Order;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.PaymentStatus;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.OrderRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -18,8 +23,6 @@ public class OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
-	
-	clientService;
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Order> findAll() {
@@ -41,29 +44,29 @@ public class OrderService {
 		return orderRepository.save(order);
 	}
 	
-//	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-//	public void delete(Long id) {
-//		try {
-//			repository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//			throw new ResourceNotFoundException(id);
-//		} catch (DataIntegrityViolationException e) {
-//			throw new DatabaseException(e.getMessage());
-//		}
-//	}
-//
-//	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-//	public Category update(Long id, Category updatedCategory) {
-//		try {
-//			Category category = repository.getOne(id);
-//			updateCategory(category, updatedCategory);
-//			return repository.save(category);
-//		} catch (EntityNotFoundException e) {
-//			throw new ResourceNotFoundException(id);
-//		}
-//	}
-//	
-//	private void updateCategory(Category category, Category updatedCategory) {
-//		category.setName(updatedCategory.getName());
-//	}
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void delete(Long id) {
+		try {
+			orderRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public Order update(Long id, Order updatedOrder) {
+		try {
+			Order order = orderRepository.getOne(id);
+			updateOrder(order, updatedOrder);
+			return orderRepository.save(order);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+	
+	private void updateOrder(Order order, Order updatedOrder) {
+		order.setStatus(updatedOrder.getStatus());
+	}
 }

@@ -27,12 +27,12 @@ public class OrderItem implements Serializable {
 	public OrderItem() {
 	}
 
-	public OrderItem(Order order, Product product, Integer quantity, Double price, Double discountPercentage) {
+	public OrderItem(Order order, Product product, Integer quantity, Double discountPercentage) {
 		super();
 		id.setOrder(order);
 		id.setProduct(product);
 		this.quantity = quantity;
-		this.price = price;
+		this.price = product.getPrice();
 		this.discountPercentage = discountPercentage;
 	}
 

@@ -18,9 +18,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.OrderStatus;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.PaymentStatus;
 
 @Entity
 @Table(name = "order_table")
@@ -35,6 +35,7 @@ public class Order implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant instant;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
@@ -59,6 +60,7 @@ public class Order implements Serializable {
 		this.id = id;
 		this.instant = instant;
 		this.client = client;
+		client.addOrder(this);
 		this.setStatus(OrderStatus.WAITING_PAYMENT);
 	}
 

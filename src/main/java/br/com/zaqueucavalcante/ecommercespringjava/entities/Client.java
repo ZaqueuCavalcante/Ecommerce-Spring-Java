@@ -17,8 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
 
 @Entity
@@ -46,7 +44,6 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private Set<Address> adresses = new HashSet<>();
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 

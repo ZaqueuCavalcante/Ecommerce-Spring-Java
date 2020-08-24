@@ -8,15 +8,9 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CategoryDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Category;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Product;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ProductRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
@@ -27,9 +21,6 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Product> findAll() {
 		return productRepository.findAll();
@@ -39,48 +30,36 @@ public class ProductService {
 		Optional<Product> entity = productRepository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public Product insert(Product product) {
+		product.setId(null);
+		return productRepository.save(product);
+	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void delete(Long id) {
+		try {
+			productRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public Page<Product> search(String productName, List<Long> categories, Integer pageNumber, Integer entitiesPerPage,
-			String direction, String orderBy) {
-		PageRequest pageRequest = PageRequest.of(pageNumber, entitiesPerPage, Direction.valueOf(direction), orderBy);
-		List<Category> categoryList = categoryRepository.findAllById(categories);
-		return productRepository.findDistinctByNameContainingAndCategoriesIn(productName, categoryList, pageRequest);
+	public Product update(Long id, Product updatedProduct) {
+		try {
+			Product product = productRepository.getOne(id);
+			updateProduct(product, updatedProduct);
+			return productRepository.save(product);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 	
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public Category insert(Category category) {
-		category.setId(null);
-		return repository.save(category);
+	private void updateProduct(Product product, Product updatedProduct) {
+		product.setName(updatedProduct.getName());
 	}
-	
-	public Category fromDTO(CategoryDTO categoryDTO) {
-		return new Category(categoryDTO.getId(), categoryDTO.getName());
-	}
-	
-//	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-//	public void delete(Long id) {
-//		try {
-//			repository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//			throw new ResourceNotFoundException(id);
-//		} catch (DataIntegrityViolationException e) {
-//			throw new DatabaseException(e.getMessage());
-//		}
-//	}
-//
-//	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-//	public Category update(Long id, Category updatedCategory) {
-//		try {
-//			Category category = repository.getOne(id);
-//			updateCategory(category, updatedCategory);
-//			return repository.save(category);
-//		} catch (EntityNotFoundException e) {
-//			throw new ResourceNotFoundException(id);
-//		}
-//	}
-//	
-//	private void updateCategory(Category category, Category updatedCategory) {
-//		category.setName(updatedCategory.getName());
-//	}
 }
