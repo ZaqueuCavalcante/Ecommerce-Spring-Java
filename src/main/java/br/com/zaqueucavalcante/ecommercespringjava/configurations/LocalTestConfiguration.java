@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Address;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.BoletoPayment;
@@ -21,6 +22,7 @@ import br.com.zaqueucavalcante.ecommercespringjava.entities.Payment;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.Product;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.State;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserProfile;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.AddressRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.CityRepository;
@@ -61,6 +63,9 @@ public class LocalTestConfiguration implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public void run(String... args) throws Exception {
@@ -89,9 +94,13 @@ public class LocalTestConfiguration implements CommandLineRunner {
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 		Client maria = new Client(null, "Maria Brown", "maria@gmail.com", ClientType.PHYSICAL_PERSON, "5138438486");
 		Client alex = new Client(null, "Alex Green", "alex@gmail.com", ClientType.LEGAL_PERSON, "24358412351");
+		maria.setPassword(passwordEncoder.encode("123"));
+		alex.setPassword(passwordEncoder.encode("321"));
 
 		maria.addPhones(Arrays.asList("384638468", "53468468"));
 		alex.addPhones(Arrays.asList("538468444", "68468484"));
+		
+		alex.addProfile(UserProfile.ADMIN);
 
 		State MG = new State(null, "Minas Gerais");
 		State PE = new State(null, "Pernambuco");
@@ -107,6 +116,9 @@ public class LocalTestConfiguration implements CommandLineRunner {
 
 		Address ad1 = new Address(null, recife, "Rua da moeda", "Agamenon", "55015", maria);
 		Address ad2 = new Address(null, saoPaulo, "Santa Efigênia", "Paulista", "52846", alex);
+		
+		maria.addAddress(ad1);
+		alex.addAddress(ad2);
 
 		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), maria);
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), alex);

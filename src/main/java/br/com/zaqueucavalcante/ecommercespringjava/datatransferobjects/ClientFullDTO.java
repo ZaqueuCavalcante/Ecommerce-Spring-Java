@@ -24,6 +24,9 @@ public class ClientFullDTO implements Serializable {
 	@NotEmpty(message = "Required field.")
 	@Email(message = "Invalid email.")
 	private String email;
+	
+	@NotEmpty(message = "Required field.")
+	private String password;
 
 	@NotEmpty(message = "Required field.")
 	private Integer type;
@@ -72,6 +75,14 @@ public class ClientFullDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Integer getType() {

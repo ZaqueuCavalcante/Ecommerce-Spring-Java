@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,10 @@ public class ClientService {
 
 	@Autowired
 	private ClientRepository repository;
-
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Client> findAll() {
 		return repository.findAll();
@@ -66,9 +70,11 @@ public class ClientService {
 		Long id = clientFullDTO.getId();
 		String name = clientFullDTO.getName();
 		String email = clientFullDTO.getEmail();
+		String password = passwordEncoder.encode(clientFullDTO.getPassword());
 		ClientType type = ClientType.valueOf(clientFullDTO.getType());
 		String cpfOrCnpj = clientFullDTO.getCpfOrCnpj();
 		Client client = new Client(id, name, email, type, cpfOrCnpj);
+		client.setPassword(password);
 
 		Long cityId = clientFullDTO.getCityId();
 		String cityName = "New New York";

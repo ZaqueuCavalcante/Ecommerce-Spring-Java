@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -17,7 +18,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserProfile;
 
 @Entity
 @Table(name = "client_table")
@@ -34,6 +38,8 @@ public class Client implements Serializable {
 	@Column(unique = true)
 	private String email;
 	
+	@JsonIgnore
+	private String password;
 	private Integer type;
 	private String cpfOrCnpj;
 	
@@ -47,7 +53,13 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 
-	public Client() {}
+	@ElementCollection
+	@CollectionTable(name = "profile_table")
+	private Set<Integer> profiles = new HashSet<>();
+	
+	public Client() {
+		addProfile(UserProfile.CLIENT);
+	}
 	
 	public Client(Long id, String name, String email, ClientType type, String cpfOrCnpj) {
 		super();
@@ -56,6 +68,7 @@ public class Client implements Serializable {
 		this.email = email;
 		this.type = type.getCode();
 		this.cpfOrCnpj = cpfOrCnpj;
+		addProfile(UserProfile.CLIENT);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -83,6 +96,14 @@ public class Client implements Serializable {
 		this.email = email;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public ClientType getType() {
 		return ClientType.valueOf(type);
 	}
@@ -99,8 +120,24 @@ public class Client implements Serializable {
 		this.cpfOrCnpj = cpfOrCnpj;
 	}
 
+	public Set<String> getPhones() {
+		return phones;
+	}
+
+	public Set<Address> getAdresses() {
+		return adresses;
+	}
+
 	public List<Order> getOrders() {
 		return orders;
+	}
+	
+	public Set<UserProfile> getProfiles() {
+		return profiles.stream().map(code -> UserProfile.valueOf(code)).collect(Collectors.toSet());
+	}
+	
+	public void setProfiles(Set<Integer> profiles) {
+		this.profiles = profiles;
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -128,6 +165,11 @@ public class Client implements Serializable {
 	
 	public void addOrders(List<Order> orderList) {
 		orders.addAll(orderList);
+	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public void addProfile(UserProfile userProfile) {
+		profiles.add(userProfile.getCode());
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
