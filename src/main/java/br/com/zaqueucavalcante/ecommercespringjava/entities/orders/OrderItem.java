@@ -1,14 +1,12 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.orders;
 
-import java.io.Serializable;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.zaqueucavalcante.ecommercespringjava.entities.primarykeys.OrderItemPrimaryKey;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "order_item_table")
@@ -24,8 +22,7 @@ public class OrderItem implements Serializable {
 	private Double price;
 	private Double discountPercentage;
 
-	public OrderItem() {
-	}
+	public OrderItem() {}
 
 	public OrderItem(Order order, Product product, Integer quantity, Double discountPercentage) {
 		super();
@@ -130,4 +127,5 @@ public class OrderItem implements Serializable {
 			return false;
 		return true;
 	}
+
 }

@@ -1,43 +1,41 @@
 package br.com.zaqueucavalcante.ecommercespringjava.resources;
 
-import java.net.URI;
-import java.util.List;
-
-import javax.validation.Valid;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
+import br.com.zaqueucavalcante.ecommercespringjava.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Order;
-import br.com.zaqueucavalcante.ecommercespringjava.services.OrderService;
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderResource {
 
-	@Autowired
-	private OrderService orderService;
+	private final OrderService orderService;
 
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	@GetMapping
-	public ResponseEntity<List<Order>> findAll() {
-		List<Order> ordersList = orderService.findAll();
-		return ResponseEntity.ok().body(ordersList);
+	public OrderResource(OrderService orderService) {
+		this.orderService = orderService;
 	}
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Order> findById(@PathVariable Long id) {
 		Order order = orderService.findById(id);
 		return ResponseEntity.ok().body(order);
+	}
+	
+	@GetMapping
+	public ResponseEntity<Page<Order>> findPage(
+			@RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber, 
+			@RequestParam(value = "entitiesPerPage", defaultValue = "24") Integer entitiesPerPage, 
+			@RequestParam(value = "direction", defaultValue = "DESC") String direction, 
+			@RequestParam(value = "orderBy", defaultValue = "instante") String orderBy) {
+		Page<Order> orderPage = orderService.findPage(pageNumber, entitiesPerPage, direction, orderBy);
+		return ResponseEntity.ok().body(orderPage);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -62,4 +60,5 @@ public class OrderResource {
 		Order updatedOrder = orderService.update(id, order);
 		return ResponseEntity.ok().body(updatedOrder);
 	}
+
 }

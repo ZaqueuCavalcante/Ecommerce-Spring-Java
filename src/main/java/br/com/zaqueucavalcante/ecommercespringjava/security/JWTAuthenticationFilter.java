@@ -1,14 +1,7 @@
 package br.com.zaqueucavalcante.ecommercespringjava.security;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CredentialsDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,9 +9,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CredentialsDTO;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -51,7 +48,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
-
 		String username = ((UserSecurity) auth.getPrincipal()).getUsername();
 		String token = jwtUtil.generateToken(username);
 		res.addHeader("Authorization", "Bearer " + token);
@@ -71,8 +67,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		private String json() {
 			long date = new Date().getTime();
-			return "{\"timestamp\": " + date + ", " + "\"status\": 401, " + "\"error\": \"Unauthorized\", "
-					+ "\"message\": \"Invalid email or password\", " + "\"path\": \"/login\"}";
+			return "{\"timestamp\": " + date + ", " + 
+					"\"status\": 401, " + 
+					"\"error\": \"Unauthorized\", " + 
+					"\"message\": \"Invalid email or password\", " + 
+					"\"path\": \"/login\"}";
 		}
 	}
+
 }

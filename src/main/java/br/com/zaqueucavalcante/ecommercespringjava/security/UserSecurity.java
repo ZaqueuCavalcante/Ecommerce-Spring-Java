@@ -1,14 +1,13 @@
 package br.com.zaqueucavalcante.ecommercespringjava.security;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserProfile;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserSecurity implements UserDetails {
 
@@ -26,7 +25,8 @@ public class UserSecurity implements UserDetails {
 		this.id = id;
 		this.email = email;
 		this.password = password;
-		this.authorities = profiles.stream().map(profile -> new SimpleGrantedAuthority(profile.getDescription())).collect(Collectors.toList());
+		this.authorities = profiles.stream().map(profile -> new SimpleGrantedAuthority(
+				profile.getDescription())).collect(Collectors.toList());
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -69,4 +69,11 @@ public class UserSecurity implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public boolean hasRole(UserProfile userProfile) {
+		SimpleGrantedAuthority auth = new SimpleGrantedAuthority(userProfile.getDescription());
+		return getAuthorities().contains(auth);
+	}
+
 }

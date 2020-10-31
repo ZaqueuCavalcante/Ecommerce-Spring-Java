@@ -1,4 +1,4 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities.enums;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.orders;
 
 public enum OrderStatus {
 
@@ -34,4 +34,5 @@ public enum OrderStatus {
 		}
 		throw new IllegalArgumentException("Invalid OrderStatus code.");
 	}
+
 }

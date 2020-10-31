@@ -1,13 +1,11 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities.primarykeys;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.orders;
 
-import java.io.Serializable;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Product;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Order;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Product;
+import java.io.Serializable;
 
 @Embeddable
 public class OrderItemPrimaryKey implements Serializable {
@@ -70,4 +68,5 @@ public class OrderItemPrimaryKey implements Serializable {
 			return false;
 		return true;
 	}
+
 }

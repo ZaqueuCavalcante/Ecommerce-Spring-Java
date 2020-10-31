@@ -1,14 +1,14 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities.enums;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.clients;
 
-public enum UserProfile {
+public enum ClientType {
 
-	ADMIN(1, "ROLE_ADMIN"),
-	CLIENT(2, "ROLE_CLIENT");
+	PHYSICAL_PERSON(1, "Physical Person"),
+	LEGAL_PERSON(2, "Legal Person");
 
 	private int code;
 	private String description;
 
-	private UserProfile(int code, String description) {
+	private ClientType(int code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -23,12 +23,13 @@ public enum UserProfile {
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public static UserProfile valueOf(int code) {
-		for (UserProfile value : UserProfile.values()) {
+	public static ClientType valueOf(int code) {
+		for (ClientType value : ClientType.values()) {
 			if (value.getCode() == code) {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid UserProfile code.");
+		throw new IllegalArgumentException("Invalid ClientType code.");
 	}
+
 }

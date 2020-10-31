@@ -1,10 +1,10 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services.exceptions;
 
-public class DatabaseException extends RuntimeException {
+public class AuthorizationException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 
-	public DatabaseException(String message) {
+	public AuthorizationException(String message) {
 		super(message);
 	}
 

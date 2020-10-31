@@ -1,23 +1,12 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.payments;
 
-import java.io.Serializable;
-import java.time.Instant;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.PaymentStatus;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.Instant;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -112,4 +101,5 @@ public abstract class Payment implements Serializable {
 			return false;
 		return true;
 	}
+
 }

@@ -1,22 +1,26 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
-import java.util.Set;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.security.UserSecurity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserProfile;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
-import br.com.zaqueucavalcante.ecommercespringjava.security.UserSecurity;
+import java.util.Set;
 
 @Service
 public class UserDetailServiceImplementation implements UserDetailsService {
 
-	private ClientRepository clientRepository;
-	
+	private final ClientRepository clientRepository;
+
+	public UserDetailServiceImplementation(ClientRepository clientRepository) {
+		this.clientRepository = clientRepository;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		Client client = clientRepository.findByEmail(userEmail);
@@ -30,4 +34,5 @@ public class UserDetailServiceImplementation implements UserDetailsService {
 		UserSecurity userSecurity = new UserSecurity(id, email, password, authorities);
 		return userSecurity;
 	}
+
 }

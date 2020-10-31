@@ -1,26 +1,17 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.orders;
 
+import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.Address;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.payments.Payment;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "order_table")
@@ -52,11 +43,9 @@ public class Order implements Serializable {
 	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAddress;
 
-	public Order() {
-	}
+	public Order() {}
 	
 	public Order(Long id, Instant instant, Client client) {
-		super();
 		this.id = id;
 		this.instant = instant;
 		this.client = client;
@@ -178,4 +167,5 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
+
 }

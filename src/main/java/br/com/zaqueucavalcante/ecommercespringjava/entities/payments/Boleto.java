@@ -1,18 +1,18 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.payments;
 
-import java.time.Instant;
-import java.util.Date;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @JsonTypeName("BoletoPayment")
 @Table(name = "boleto_payment_table")
-public class BoletoPayment extends Payment {
+public class Boleto extends Payment {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,10 +22,10 @@ public class BoletoPayment extends Payment {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date paymentDate;
 	
-	public BoletoPayment() {
+	public Boleto() {
 	}
 
-	public BoletoPayment(Long id, Instant instant, Order order, Date dueDate) {
+	public Boleto(Long id, Instant instant, Order order, Date dueDate) {
 		super(id, instant, order);
 		this.dueDate = dueDate;
 	}
@@ -46,4 +46,5 @@ public class BoletoPayment extends Payment {
 	public void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
 	}
+
 }

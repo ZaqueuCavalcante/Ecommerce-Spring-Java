@@ -1,25 +1,26 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Product;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.ProductRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Product;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.ProductRepository;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
 
-	@Autowired
-	private ProductRepository productRepository;
+	private final ProductRepository productRepository;
+
+	public ProductService(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Product> findAll() {
@@ -62,4 +63,5 @@ public class ProductService {
 	private void updateProduct(Product product, Product updatedProduct) {
 		product.setName(updatedProduct.getName());
 	}
+
 }

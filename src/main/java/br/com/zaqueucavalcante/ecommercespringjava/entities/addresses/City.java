@@ -1,14 +1,7 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.addresses;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "city_table")
@@ -26,8 +19,7 @@ public class City implements Serializable {
 	@JoinColumn(name = "state_id")
 	private State state;
 
-	public City() {
-	}
+	public City() {}
 
 	public City(Long id, String name, State state) {
 		super();
@@ -87,4 +79,5 @@ public class City implements Serializable {
 			return false;
 		return true;
 	}
+
 }

@@ -1,19 +1,18 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities.enums;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.users;
 
-public enum PaymentStatus {
+public enum UserProfile {
 
-	PENDING(1, "Pending"),
-	SETTLED(2, "Settled"),
-	CANCELED(3, "Canceled");
-	
+	ADMIN(1, "ROLE_ADMIN"),
+	CLIENT(2, "ROLE_CLIENT");
+
 	private int code;
 	private String description;
-	
-	private PaymentStatus(int code, String description) {
+
+	private UserProfile(int code, String description) {
 		this.code = code;
 		this.description = description;
 	}
-	
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public int getCode() {
 		return code;
@@ -22,14 +21,15 @@ public enum PaymentStatus {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	public static PaymentStatus valueOf(int code) {
-		for (PaymentStatus value : PaymentStatus.values()) {
+	public static UserProfile valueOf(int code) {
+		for (UserProfile value : UserProfile.values()) {
 			if (value.getCode() == code) {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid PaymentStatus code.");
+		throw new IllegalArgumentException("Invalid UserProfile code.");
 	}
+
 }

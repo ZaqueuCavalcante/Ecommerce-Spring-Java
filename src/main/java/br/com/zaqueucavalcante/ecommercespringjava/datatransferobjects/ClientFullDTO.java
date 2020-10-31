@@ -1,14 +1,12 @@
 package br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects;
 
-import java.io.Serializable;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientInsert;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.Length;
-
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
-import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientInsert;
+import java.io.Serializable;
 
 @ClientInsert
 public class ClientFullDTO implements Serializable {
@@ -41,8 +39,7 @@ public class ClientFullDTO implements Serializable {
 	
 	private String phone;
 	
-	public ClientFullDTO() {
-	}
+	public ClientFullDTO() {}
 
 	public ClientFullDTO(Client client) {
 		id = client.getId();
@@ -142,4 +139,5 @@ public class ClientFullDTO implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 }

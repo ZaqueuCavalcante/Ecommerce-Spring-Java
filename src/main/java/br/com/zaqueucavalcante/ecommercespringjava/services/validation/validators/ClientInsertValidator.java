@@ -1,20 +1,18 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services.validation.validators;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientFullDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.ClientType;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.resources.exceptions.FieldMessage;
 import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientInsert;
 import br.com.zaqueucavalcante.ecommercespringjava.services.validation.utils.CpfAndCnpj;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientInsertValidator implements ConstraintValidator<ClientInsert, ClientFullDTO> {
 
@@ -22,8 +20,7 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 	private ClientRepository repository;
 	
 	@Override
-	public void initialize(ClientInsert clientInsert) {
-	}
+	public void initialize(ClientInsert clientInsert) {}
 
 	@Override
 	public boolean isValid(ClientFullDTO client, ConstraintValidatorContext context) {
@@ -72,4 +69,5 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 					.addPropertyNode(fieldMessage.getFieldName()).addConstraintViolation();
 		}
 	}
+
 }

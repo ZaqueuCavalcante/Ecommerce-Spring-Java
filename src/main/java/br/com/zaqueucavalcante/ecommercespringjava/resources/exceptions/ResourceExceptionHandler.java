@@ -1,10 +1,8 @@
 package br.com.zaqueucavalcante.ecommercespringjava.resources.exceptions;
 
-import java.time.Instant;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.AuthorizationException;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,8 +10,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.List;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -66,4 +65,17 @@ public class ResourceExceptionHandler {
 			validationError.addFieldMessage(fieldMessage);
 		}
 	}
+	
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+		Instant timestamp = Instant.now();
+		Integer status = HttpStatus.FORBIDDEN.value();
+		String error = "Access denied.";
+		String message = e.getMessage();
+		String path = request.getRequestURI();
+		StandardError standardError = new StandardError(timestamp, status, error, message, path);
+		return ResponseEntity.status(status).body(standardError);
+	}
+
 }

@@ -1,10 +1,10 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
-
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CategoryDTO;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Category;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,18 +13,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CategoryDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Category;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
 
-	@Autowired
-	private CategoryRepository repository;
-	
+	private final CategoryRepository repository;
+
+	public CategoryService(CategoryRepository repository) {
+		this.repository = repository;
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Category> findAll() {
 		return repository.findAll();
@@ -75,4 +76,5 @@ public class CategoryService {
 	private void updateCategory(Category category, Category updatedCategory) {
 		category.setName(updatedCategory.getName());
 	}
+
 }

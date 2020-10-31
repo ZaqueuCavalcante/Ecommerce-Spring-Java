@@ -1,10 +1,18 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
-
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientDTO;
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientFullDTO;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.Address;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.City;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.State;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.ClientType;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.security.UserSecurity;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.AuthorizationException;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
+import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,34 +23,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientFullDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Address;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.City;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.State;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
-import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
 
-	@Autowired
-	private ClientRepository repository;
-	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-	
+	private final ClientRepository repository;
+	private final BCryptPasswordEncoder passwordEncoder;
+
+	public ClientService(ClientRepository repository, BCryptPasswordEncoder passwordEncoder) {
+		this.repository = repository;
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Client> findAll() {
 		return repository.findAll();
 	}
 
 	public Client findById(Long id) {
+		authorizationCheck(id);
 		Optional<Client> entity = repository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+	
+	private void authorizationCheck(Long id) {
+		UserSecurity user = UserService.authenticated();
+		if (user == null || !user.hasRole(UserProfile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Access denied.");
+		}
 	}
 
 	public Page<Client> findPage(Integer pageNumber, Integer entitiesPerPage, String direction, String orderBy) {
@@ -121,4 +132,5 @@ public class ClientService {
 		client.setType(updatedClient.getType());
 		client.setCpfOrCnpj(updatedClient.getCpfOrCnpj());
 	}
+
 }

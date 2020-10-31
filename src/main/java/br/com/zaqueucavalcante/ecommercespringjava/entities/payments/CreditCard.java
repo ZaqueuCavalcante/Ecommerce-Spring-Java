@@ -1,24 +1,24 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.payments;
 
-import java.time.Instant;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.Instant;
 
 @Entity
 @JsonTypeName("CreditCardPayment")
 @Table(name = "credit_card_payment_table")
-public class CreditCardPayment extends Payment {
+public class CreditCard extends Payment {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Integer parcelsNumber;
 	
-	public CreditCardPayment() {}
+	public CreditCard() {}
 
-	public CreditCardPayment(Long id, Instant instant, Order order, Integer parcelsNumber) {
+	public CreditCard(Long id, Instant instant, Order order, Integer parcelsNumber) {
 		super(id, instant, order);
 		this.parcelsNumber = parcelsNumber;
 	}
@@ -31,4 +31,5 @@ public class CreditCardPayment extends Payment {
 	public void setParcelsNumber(Integer parcelsNumber) {
 		this.parcelsNumber = parcelsNumber;
 	}
+
 }

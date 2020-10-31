@@ -22,4 +22,5 @@ public class ValidationError extends StandardError {
 	public void addFieldMessage(FieldMessage fieldMessage) {
 		fieldMessageList.add(fieldMessage);
 	}
+
 }

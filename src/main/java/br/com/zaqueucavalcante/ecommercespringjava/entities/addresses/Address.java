@@ -1,16 +1,10 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.addresses;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "address_table")
@@ -35,8 +29,7 @@ public class Address implements Serializable {
 	@JoinColumn(name = "client_id")
 	private Client client;
 
-	public Address() {
-	}
+	public Address() {}
 
 	public Address(Long id, City city, String street, String avenue, String zipCode, Client client) {
 		super();
@@ -122,4 +115,5 @@ public class Address implements Serializable {
 			return false;
 		return true;
 	}
+
 }

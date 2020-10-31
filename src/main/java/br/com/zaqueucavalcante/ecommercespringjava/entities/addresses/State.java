@@ -1,17 +1,11 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.addresses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "state_table")
@@ -29,8 +23,7 @@ public class State implements Serializable {
 	@OneToMany(mappedBy = "state")
 	private Set<City> cities  = new HashSet<>();
 
-	public State() {
-	}
+	public State() {}
 
 	public State(Long id, String name) {
 		super();
@@ -88,5 +81,6 @@ public class State implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
+
 }

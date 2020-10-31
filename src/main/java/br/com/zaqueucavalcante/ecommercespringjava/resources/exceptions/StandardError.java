@@ -1,9 +1,9 @@
 package br.com.zaqueucavalcante.ecommercespringjava.resources.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.Instant;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class StandardError implements Serializable {
 
@@ -17,8 +17,7 @@ public class StandardError implements Serializable {
 	private String message;
 	private String path;
 
-	public StandardError() {
-	}
+	public StandardError() {}
 
 	public StandardError(Instant timestamp, Integer status, String error, String message, String path) {
 		super();
@@ -69,4 +68,5 @@ public class StandardError implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
 }

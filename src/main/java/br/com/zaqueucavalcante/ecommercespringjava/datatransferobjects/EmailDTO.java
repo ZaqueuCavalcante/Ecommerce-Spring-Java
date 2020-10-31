@@ -1,16 +1,19 @@
 package br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
-public class CredentialsDTO implements Serializable {
+public class EmailDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private String email;
-	private String password;
 	
-	public CredentialsDTO() {}
-
+	@NotEmpty(message = "Required field.")
+	@Email(message = "Invalid email.")
+	private String email;
+	
+	public EmailDTO() {}
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public String getEmail() {
 		return email;
@@ -18,14 +21,6 @@ public class CredentialsDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 }

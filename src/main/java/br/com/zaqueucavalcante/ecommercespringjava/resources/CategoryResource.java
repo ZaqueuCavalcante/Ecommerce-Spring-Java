@@ -1,41 +1,35 @@
 package br.com.zaqueucavalcante.ecommercespringjava.resources;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CategoryDTO;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Category;
+import br.com.zaqueucavalcante.ecommercespringjava.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.CategoryDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Category;
-import br.com.zaqueucavalcante.ecommercespringjava.services.CategoryService;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
 	
-	@Autowired
-	private CategoryService service;
-	
+	private final CategoryService service;
+
+	public CategoryResource(CategoryService service) {
+		this.service = service;
+	}
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	@GetMapping
 	public ResponseEntity<List<CategoryDTO>> findAll() {
 		List<Category> categoryList = service.findAll();
-		List<CategoryDTO> categoryDTOList = categoryList.stream().map(category -> new CategoryDTO(category)).collect(Collectors.toList());
+		List<CategoryDTO> categoryDTOList = categoryList.stream().map(CategoryDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(categoryDTOList);
 	}
 	
@@ -52,11 +46,12 @@ public class CategoryResource {
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction, 
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
 		Page<Category> categoryPage = service.findPage(pageNumber, entitiesPerPage, direction, orderBy);
-		Page<CategoryDTO> categoryDTOPage = categoryPage.map(category -> new CategoryDTO(category));
+		Page<CategoryDTO> categoryDTOPage = categoryPage.map(CategoryDTO::new);
 		return ResponseEntity.ok().body(categoryDTOPage);
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Category> insert(@Valid @RequestBody CategoryDTO categoryDTO) {
 		Category category = service.fromDTO(categoryDTO);
@@ -66,6 +61,7 @@ public class CategoryResource {
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
@@ -73,10 +69,12 @@ public class CategoryResource {
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Category> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
 		Category category = service.fromDTO(categoryDTO);
 		Category updatedCategory = service.update(id, category);
 		return ResponseEntity.ok().body(updatedCategory);
 	}
+
 }

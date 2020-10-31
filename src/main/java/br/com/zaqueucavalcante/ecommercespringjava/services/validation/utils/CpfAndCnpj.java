@@ -21,7 +21,6 @@ public class CpfAndCnpj {
 	public static boolean isValidCPF(final String cpf) {
 		if ((cpf == null) || (cpf.length() != 11) || cpf.matches(cpf.charAt(0) + "{11}"))
 			return false;
-
 		final Integer digit1 = calculate(cpf.substring(0, 9), weightCpf);
 		final Integer digit2 = calculate(cpf.substring(0, 9) + digit1, weightCpf);
 		return cpf.equals(cpf.substring(0, 9) + digit1.toString() + digit2.toString());
@@ -30,9 +29,9 @@ public class CpfAndCnpj {
 	public static boolean isValidCNPJ(final String cnpj) {
 		if ((cnpj == null) || (cnpj.length() != 14) || cnpj.matches(cnpj.charAt(0) + "{14}"))
 			return false;
-
 		final Integer digit1 = calculate(cnpj.substring(0, 12), weightCnpj);
 		final Integer digit2 = calculate(cnpj.substring(0, 12) + digit1, weightCnpj);
 		return cnpj.equals(cnpj.substring(0, 12) + digit1.toString() + digit2.toString());
 	}
+
 }

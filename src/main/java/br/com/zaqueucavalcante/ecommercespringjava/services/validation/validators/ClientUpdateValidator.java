@@ -1,21 +1,19 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services.validation.validators;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientDTO;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.resources.exceptions.FieldMessage;
+import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientUpdate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.HandlerMapping;
-
-import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientDTO;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Client;
-import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
-import br.com.zaqueucavalcante.ecommercespringjava.resources.exceptions.FieldMessage;
-import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientUpdate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, ClientDTO> {
 
@@ -60,4 +58,5 @@ public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, 
 					.addPropertyNode(fieldMessage.getFieldName()).addConstraintViolation();
 		}
 	}
+
 }

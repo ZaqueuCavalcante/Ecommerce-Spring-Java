@@ -1,8 +1,8 @@
 package br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects;
 
-import java.io.Serializable;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Product;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Product;
+import java.io.Serializable;
 
 public class ProductDTO implements Serializable {
 
@@ -12,8 +12,7 @@ public class ProductDTO implements Serializable {
 	private String name;
 	private Double price;
 	
-	public ProductDTO() {
-	}
+	public ProductDTO() {}
 	
 	public ProductDTO(Product product) {
 		id = product.getId();
@@ -45,4 +44,5 @@ public class ProductDTO implements Serializable {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+
 }

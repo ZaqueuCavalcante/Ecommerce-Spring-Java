@@ -1,27 +1,17 @@
-package br.com.zaqueucavalcante.ecommercespringjava.entities;
+package br.com.zaqueucavalcante.ecommercespringjava.entities.clients;
 
+import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.Address;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.ClientType;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.enums.UserProfile;
 
 @Entity
 @Table(name = "client_table")
@@ -40,6 +30,7 @@ public class Client implements Serializable {
 	
 	@JsonIgnore
 	private String password;
+	
 	private Integer type;
 	private String cpfOrCnpj;
 	
@@ -53,7 +44,7 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "profile_table")
 	private Set<Integer> profiles = new HashSet<>();
 	
@@ -124,7 +115,7 @@ public class Client implements Serializable {
 		return phones;
 	}
 
-	public Set<Address> getAdresses() {
+	public Set<Address> getAddresses() {
 		return adresses;
 	}
 
@@ -134,10 +125,6 @@ public class Client implements Serializable {
 	
 	public Set<UserProfile> getProfiles() {
 		return profiles.stream().map(code -> UserProfile.valueOf(code)).collect(Collectors.toSet());
-	}
-	
-	public void setProfiles(Set<Integer> profiles) {
-		this.profiles = profiles;
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -154,7 +141,7 @@ public class Client implements Serializable {
 		adresses.add(address);
 	}
 	
-	public void addAdresses(List<Address> addressList) {
+	public void addAddresses(List<Address> addressList) {
 		adresses.addAll(addressList);
 	}
 	
@@ -197,4 +184,5 @@ public class Client implements Serializable {
 			return false;
 		return true;
 	}
+
 }

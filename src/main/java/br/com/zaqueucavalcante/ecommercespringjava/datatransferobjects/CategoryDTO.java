@@ -1,12 +1,10 @@
 package br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotEmpty;
-
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Category;
 import org.hibernate.validator.constraints.Length;
 
-import br.com.zaqueucavalcante.ecommercespringjava.entities.Category;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 public class CategoryDTO implements Serializable {
 
@@ -18,8 +16,7 @@ public class CategoryDTO implements Serializable {
 	@Length(min = 5, max = 80, message = "The name must be 5-80 characters.")
 	private String name;
 	
-	public CategoryDTO() {
-	}
+	public CategoryDTO() {}
 	
 	public CategoryDTO(Category category) {
 		this.id = category.getId();
@@ -42,4 +39,5 @@ public class CategoryDTO implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 }
