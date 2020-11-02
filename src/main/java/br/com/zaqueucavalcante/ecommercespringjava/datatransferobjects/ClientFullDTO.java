@@ -1,6 +1,7 @@
 package br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.ClientType;
 import br.com.zaqueucavalcante.ecommercespringjava.services.validation.ClientInsert;
 import org.hibernate.validator.constraints.Length;
 
@@ -45,7 +46,7 @@ public class ClientFullDTO implements Serializable {
 		id = client.getId();
 		name = client.getName();
 		email = client.getEmail();
-		type = client.getType().getCode();
+		type = client.getTypeCode();
 		cpfOrCnpj = client.getCpfOrCnpj();
 	}
 
@@ -139,5 +140,12 @@ public class ClientFullDTO implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	public boolean is(ClientType type) {
+		return this.type.equals(type.getCode());
+	}
+
+
 
 }

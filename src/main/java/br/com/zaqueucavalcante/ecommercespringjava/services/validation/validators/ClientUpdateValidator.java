@@ -24,35 +24,30 @@ public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, 
 	private ClientRepository repository;
 	
 	@Override
-	public void initialize(ClientUpdate clientUpdate) {
-	}
+	public void initialize(ClientUpdate clientUpdate) {}
 
 	@Override
 	public boolean isValid(ClientDTO client, ConstraintValidatorContext context) {
 		@SuppressWarnings("unchecked")
 		Map<String, String> uriMap = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 		Long uriId = Long.parseLong(uriMap.get("id"));
-		
-		List<FieldMessage> fieldMessageList = new ArrayList<>();
-		
-		emailValidation(client, fieldMessageList, uriId);
-
-		buildConstraintViolation(context, fieldMessageList);
-		
-		return fieldMessageList.isEmpty();
+		List<FieldMessage> fieldMessages = new ArrayList<>();
+		emailValidation(client, fieldMessages, uriId);
+		buildConstraintViolation(context, fieldMessages);
+		return fieldMessages.isEmpty();
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	private void emailValidation(ClientDTO client, List<FieldMessage> fieldMessageList, Long uriId) {
+	private void emailValidation(ClientDTO client, List<FieldMessage> fieldMessages, Long uriId) {
 		Client clientWithSameEmail = repository.findByEmail(client.getEmail());
 		if (clientWithSameEmail != null && !clientWithSameEmail.getId().equals(uriId)) {
-			fieldMessageList.add(new FieldMessage("email", "This email is already registered."));
+			fieldMessages.add(new FieldMessage("email", "This email is already registered."));
 		}
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-	private void buildConstraintViolation(ConstraintValidatorContext context, List<FieldMessage> fieldMessageList) {
-		for (FieldMessage fieldMessage : fieldMessageList) {
+	private void buildConstraintViolation(ConstraintValidatorContext context, List<FieldMessage> fieldMessages) {
+		for (FieldMessage fieldMessage : fieldMessages) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(fieldMessage.getMessage())
 					.addPropertyNode(fieldMessage.getFieldName()).addConstraintViolation();

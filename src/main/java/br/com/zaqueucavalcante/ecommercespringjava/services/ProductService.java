@@ -1,12 +1,16 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Category;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Product;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ProductRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,32 +20,40 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-	private final ProductRepository productRepository;
+	private final ProductRepository repository;
+	private final CategoryRepository categoryRepository;
 
-	public ProductService(ProductRepository productRepository) {
-		this.productRepository = productRepository;
+	public ProductService(ProductRepository repository, CategoryRepository categoryRepository) {
+		this.repository = repository;
+		this.categoryRepository = categoryRepository;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public List<Product> findAll() {
-		return productRepository.findAll();
+		return repository.findAll();
 	}
 
 	public Product findById(Long id) {
-		Optional<Product> entity = productRepository.findById(id);
+		Optional<Product> entity = repository.findById(id);
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+
+	public Page<Product> findPage(String name, List<Long> categoriesIds, Integer pageNumber, Integer entitiesPerPage, String direction, String orderBy) {
+		List<Category> categories = categoryRepository.findAllById(categoriesIds);
+		PageRequest pageRequest = PageRequest.of(pageNumber, entitiesPerPage, Sort.Direction.valueOf(direction), orderBy);
+		return repository.findDistinctByNameContainingAndCategoriesIn(name, categories, pageRequest);
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public Product insert(Product product) {
 		product.setId(null);
-		return productRepository.save(product);
+		return repository.save(product);
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public void delete(Long id) {
 		try {
-			productRepository.deleteById(id);
+			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
 		} catch (DataIntegrityViolationException e) {
@@ -52,9 +64,9 @@ public class ProductService {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public Product update(Long id, Product updatedProduct) {
 		try {
-			Product product = productRepository.getOne(id);
+			Product product = repository.getOne(id);
 			updateProduct(product, updatedProduct);
-			return productRepository.save(product);
+			return repository.save(product);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}

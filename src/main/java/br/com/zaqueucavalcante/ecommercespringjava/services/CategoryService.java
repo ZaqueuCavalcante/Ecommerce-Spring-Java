@@ -5,7 +5,6 @@ import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Category;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.CategoryRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;

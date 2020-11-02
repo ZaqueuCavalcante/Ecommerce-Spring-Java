@@ -4,7 +4,6 @@ import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.security.UserSecurity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

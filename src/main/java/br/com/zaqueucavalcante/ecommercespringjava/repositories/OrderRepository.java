@@ -11,4 +11,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	@Transactional(readOnly = true)
 	Page<Order> findByClient(Client client, Pageable pageRequest);
+
 }

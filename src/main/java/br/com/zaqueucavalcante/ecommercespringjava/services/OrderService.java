@@ -1,14 +1,16 @@
 package br.com.zaqueucavalcante.ecommercespringjava.services;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.payments.PaymentStatus;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.OrderItem;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.products.Product;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.OrderItemRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.OrderRepository;
+import br.com.zaqueucavalcante.ecommercespringjava.repositories.PaymentRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.security.UserSecurity;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.AuthorizationException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -22,17 +24,25 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.zaqueucavalcante.ecommercespringjava.entities.payments.PaymentStatus.PENDING;
+
 @Service
 public class OrderService {
 
 	private final OrderRepository orderRepository;
 	private final ClientService clientService;
-	private final EmailService emailService;
+	private final ProductService productService;
+	private final PaymentRepository paymentRepository;
+	private final OrderItemRepository orderItemRepository;
 
-	public OrderService(OrderRepository orderRepository, ClientService clientService, EmailService emailService) {
+	public OrderService(OrderRepository orderRepository, ClientService clientService,
+						ProductService productService,
+						PaymentRepository paymentRepository, OrderItemRepository orderItemRepository) {
 		this.orderRepository = orderRepository;
 		this.clientService = clientService;
-		this.emailService = emailService;
+		this.productService = productService;
+		this.paymentRepository = paymentRepository;
+		this.orderItemRepository = orderItemRepository;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -64,10 +74,21 @@ public class OrderService {
 	public Order insert(Order order) {
 		order.setId(null);
 		order.setInstant(Instant.now());
-		order.getPayment().setStatus(PaymentStatus.PENDING);
+		order.setPaymentStatus(PENDING);
 		order.getPayment().setOrder(order);
-		emailService.sendOrderConfirmationEmail(order);
-		return orderRepository.save(order);
+		// emailService.sendOrderConfirmationEmail(order);
+		//
+		order = orderRepository.save(order);
+		paymentRepository.save(order.getPayment());
+		for (OrderItem orderItem : order.getItems()) {
+			orderItem.setDiscountPercentage(0.0);
+			Product product = productService.findById(orderItem.getProduct().getId());
+			orderItem.setPrice(product.getPrice());
+			orderItem.setOrder(order);
+		}
+		orderItemRepository.saveAll(order.getItems());
+		//
+		return order;
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

@@ -4,7 +4,6 @@ import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientDTO
 import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientFullDTO;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import br.com.zaqueucavalcante.ecommercespringjava.services.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,8 +1,8 @@
 package br.com.zaqueucavalcante.ecommercespringjava.entities.clients;
 
 import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.Address;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.orders.Order;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -39,7 +39,7 @@ public class Client implements Serializable {
 	private Set<String> phones = new HashSet<>();
 	
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-	private Set<Address> adresses = new HashSet<>();
+	private Set<Address> addresses = new HashSet<>();
 	
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
@@ -99,6 +99,10 @@ public class Client implements Serializable {
 		return ClientType.valueOf(type);
 	}
 
+	public int getTypeCode() {
+		return ClientType.valueOf(type).getCode();
+	}
+
 	public void setType(ClientType type) {
 		this.type = type.getCode();
 	}
@@ -116,7 +120,7 @@ public class Client implements Serializable {
 	}
 
 	public Set<Address> getAddresses() {
-		return adresses;
+		return addresses;
 	}
 
 	public List<Order> getOrders() {
@@ -138,11 +142,11 @@ public class Client implements Serializable {
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 	public void addAddress(Address address) {
-		adresses.add(address);
+		addresses.add(address);
 	}
 	
 	public void addAddresses(List<Address> addressList) {
-		adresses.addAll(addressList);
+		addresses.addAll(addressList);
 	}
 	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //

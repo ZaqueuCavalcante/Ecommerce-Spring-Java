@@ -3,6 +3,7 @@ package br.com.zaqueucavalcante.ecommercespringjava.entities.orders;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.Address;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.payments.Payment;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.payments.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -98,6 +99,10 @@ public class Order implements Serializable {
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.payment.setStatus(paymentStatus);
 	}
 	
 	public Address getDeliveryAddress() {

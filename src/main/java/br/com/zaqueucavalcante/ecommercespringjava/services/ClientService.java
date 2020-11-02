@@ -4,8 +4,8 @@ import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientDTO
 import br.com.zaqueucavalcante.ecommercespringjava.datatransferobjects.ClientFullDTO;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.Address;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.City;
-import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.addresses.State;
+import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.ClientType;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.users.UserProfile;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
@@ -13,7 +13,6 @@ import br.com.zaqueucavalcante.ecommercespringjava.security.UserSecurity;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.AuthorizationException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;

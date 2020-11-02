@@ -3,7 +3,6 @@ package br.com.zaqueucavalcante.ecommercespringjava.services;
 import br.com.zaqueucavalcante.ecommercespringjava.entities.clients.Client;
 import br.com.zaqueucavalcante.ecommercespringjava.repositories.ClientRepository;
 import br.com.zaqueucavalcante.ecommercespringjava.services.exceptions.DatabaseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,10 @@ public class AuthService {
 	
 	private final ClientRepository clientRepository;
 	private final BCryptPasswordEncoder passwordEncoder;
-	private final EmailService emailService;
 
-	public AuthService(ClientRepository clientRepository, BCryptPasswordEncoder passwordEncoder, EmailService emailService) {
+	public AuthService(ClientRepository clientRepository, BCryptPasswordEncoder passwordEncoder) {
 		this.clientRepository = clientRepository;
 		this.passwordEncoder = passwordEncoder;
-		this.emailService = emailService;
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -31,7 +28,7 @@ public class AuthService {
 		client.setPassword(passwordEncoder.encode(newPassword));
 		
 		clientRepository.save(client);
-		emailService.sendNewPasswordEmail(client, newPassword);
+		// emailService.sendNewPasswordEmail(client, newPassword);
 		
 	}
 

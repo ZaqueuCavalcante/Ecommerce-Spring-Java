@@ -14,5 +14,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	@Transactional(readOnly = true)
-	Page<Product> findDistinctByNameContainingAndCategoriesIn(String productName, List<Category> categoryList, Pageable pageRequest);
+	Page<Product> findDistinctByNameContainingAndCategoriesIn(
+			String productName, List<Category> categoryList, Pageable pageRequest);
+
 }

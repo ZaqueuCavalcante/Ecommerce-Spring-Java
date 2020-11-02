@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.time.Instant;
 
 @Entity
-@JsonTypeName("CreditCardPayment")
+@JsonTypeName("CreditCard")
 @Table(name = "credit_card_payment_table")
 public class CreditCard extends Payment {
 

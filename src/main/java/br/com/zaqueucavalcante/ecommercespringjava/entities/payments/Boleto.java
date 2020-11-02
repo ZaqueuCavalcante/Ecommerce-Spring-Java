@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Entity
-@JsonTypeName("BoletoPayment")
+@JsonTypeName("Boleto")
 @Table(name = "boleto_payment_table")
 public class Boleto extends Payment {
 
